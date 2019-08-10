@@ -1,11 +1,45 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=0.7">
-    <title>WSChat</title>
+    <meta charset="UTF-8">
+    <title>operator page</title>
 </head>
-
 <body>
-<script type="text/javascript" src="bundle.js"></script></body>
-
+<div class="form-container">
+    <form>
+        <div>
+            <label for="chat-title">Chat title</label>
+            <input type="text" id="chat-title">
+        </div>
+        <div>
+            <label for="bot-name">Bot name</label>
+            <input type="text" id="bot-name">
+        </div>
+        <div>
+            <label for="position">Position</label>
+            <select id="position">
+                <option>left</option>
+                <option>right</option>
+            </select>
+        </div>
+        <div>
+            <label for="allow-to-minimize">Allow to minimize</label>
+            <input type="checkbox" id="allow-to-minimize">
+        </div>
+        <div>
+            <label for="allow-drag">Allow drag</label>
+            <input type="checkbox" id="allow-drag">
+        </div>
+        <div>
+            <label for="require-name">Require name</label>
+            <input type="checkbox" id="require-name">
+        </div>
+        <div>
+            <label for="show-data-time">Show data time</label>
+            <input type="checkbox" id="show-data-time">
+        </div>
+        <button id="send-btn" onclick="return false">upd settings</button>
+    </form>
+</div>
+<script type="text/javascript" src="operator_bundle.js"></script></body>
 </html>

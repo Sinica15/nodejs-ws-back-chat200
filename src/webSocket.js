@@ -20,7 +20,10 @@ export function wsStart() {
                     let client = clientsMap.get(ws.uuid);
                     let clientMsg = JSON.parse(message);
                     if (clientMsg.msgType == 'service'){
-                        //TODO clients service handler
+                        if (clientMsg.action == 'response action'){
+                            // cond(clientMsg.message);
+                            client.addServiceMsgInHistory(clientMsg.message);
+                        }
                     } else {
                         client.sendMsgInterlocutor(clientMsg);
                     }
@@ -31,11 +34,14 @@ export function wsStart() {
                     if (operatorMsg.msgType == 'service'){
                         let action = operatorMsg.action.split(' ');
                         if (action[0] == 'client'){
-                            cond(`some client action ${action[1]}`);
+                            cond(`some client action: ${action[1]}`);
                             operator[action[1]](clientsMap.get(operatorMsg.message));
                             notifyOperators();
                         } else {
                             cond(`operator command: ${action[0]} ${operatorMsg.message}`);
+                            if (action[0] == 'ip-api' || action[0] == 'geoip-db' && clientsMap.has(operatorMsg.message)) {
+                                clientsMap.get(operatorMsg.message).sendServiceMsg(action[0]);
+                            }
                             try{
                                 operator[action[0]](operatorMsg.message);
                             }catch (e) {

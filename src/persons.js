@@ -33,6 +33,7 @@ export function Client(ws, uuid) {
     this.nick = 'Client';
     this._type = 'client';
     this.messageHistory = [];
+    this.serviceMsgsHistory = [];
     this.unreadMsgs = 0;
 }
 Client.prototype = Object.create(Person.prototype);
@@ -57,6 +58,14 @@ Client.prototype.sendMsgInterlocutor = function (msg) {
     } else
         this.interlocutor.ws.send(JSON.stringify(message));
     notifyOperators();
+};
+Client.prototype.addServiceMsgInHistory = function (msg) {
+    // cond(msg);
+    let message = {
+        message : JSON.parse(JSON.parse(msg).response),
+        date : parseInt(new Date().getTime()),
+    };
+    this.serviceMsgsHistory.push(message);
 };
 Client.prototype.countingUnreadMsg = function () {
     ++this.unreadMsgs;

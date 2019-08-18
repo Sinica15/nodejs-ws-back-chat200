@@ -2,6 +2,7 @@ import {cond} from "./src/usefulFunctions";
 
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 import {router} from "./src/router";
 import {wsStart} from "./src/webSocket";
@@ -14,9 +15,15 @@ export let debMode = true;
 
 let app = express();
 
-app.use(express.static('public'));
+// parse application/x-www-form-urlencoded
+// app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
+app.use(express.static('public'));
 app.use('/', router);
+
+
 
 app.listen(PORT, function () {
     cond('web started on ' + PORT);

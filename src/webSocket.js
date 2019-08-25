@@ -6,6 +6,9 @@ import {operatorsMap, clientsMap} from "../server";
 import {Client, Operator} from "./persons";
 import {cond, notifyOperators} from "./usefulFunctions";
 
+import {OperatorModel} from "./models/OperatorModel";
+import {ClientModel} from "./models/ClientModel";
+
 export function wsStart() {
     const wss = new WebSocket.Server({port: PORT + 1});
     cond(`ws started on ${PORT + 1}`);
@@ -36,7 +39,6 @@ export function wsStart() {
                         if (action[0] == 'client'){
                             cond(`some client action: ${action[1]}`);
                             operator[action[1]](clientsMap.get(operatorMsg.message));
-                            notifyOperators();
                         } else {
                             cond(`operator command: ${action[0]} ${operatorMsg.message}`);
                             if (action[0] == 'ip-api' || action[0] == 'geoip-db' && clientsMap.has(operatorMsg.message)) {
@@ -49,7 +51,7 @@ export function wsStart() {
                             }
                         }
                     } else {
-                        if (operator.currentStaus == 'free'){
+                        if (operator.currentStatus == 'free'){
 
                         } else {
                             operator.sendMsgInterlocutor(operatorMsg);
@@ -61,13 +63,24 @@ export function wsStart() {
                 if (JSON.parse(message).msgType == 'service'){
                     if (JSON.parse(message).action == 'registration'){
                         let uuid = uuidv1();
+                        let msg = JSON.parse(message).message.split(' ');
                         ws.uuid = uuid;
-                        if (JSON.parse(message).message == 'operator'){
-                            operatorsMap.set(uuid, new Operator(ws, uuid));
+                        if (message[0] == 'operator'){
+                            const operator = new Operator(ws, uuid);
+                            operatorsMap.set(uuid, operator);
+                            new OperatorModel({
+                                uuid : operator.uuid,
+                                connectionTime : operator.connectionTime
+                            }).save();
                             notifyOperators();
                             cond('reg operator');
                         } else {
-                            clientsMap.set(uuid, new Client(ws, uuid));
+                            const client = new Client(ws, uuid, message[1]);
+                            clientsMap.set(uuid, client);
+                            new ClientModel({
+                                uuid : client.uuid,
+                                connectionTime : client.connectionTime
+                            }).save();
                             notifyOperators();
                             cond('reg client');
                         }
@@ -86,12 +99,26 @@ export function wsStart() {
                 cond(`client ${client.uuid} disconnect`);
                 if (client.interlocutor !== undefined) client.interlocutor.disconnectClient();
                 clientsMap.delete(ws.uuid);
+                ClientModel.findOne({uuid : client.uuid}, (err, client) => {
+                    if (err) cond(err);
+                    client.online = false;
+                    client.save( err => {
+                        if (err) cond(err);
+                    });
+                });
                 notifyOperators()
             } else {
                 let operator = operatorsMap.get(ws.uuid);
                 cond(`operator ${operator.uuid} disconnect`);
                 if (operator.interlocutor !== undefined) operator.disconnectClient();
                 operatorsMap.delete(ws.uuid);
+                OperatorModel.findOne({uuid : operator.uuid}, (err, operator) => {
+                    if (err) cond(err);
+                    operator.online = false;
+                    operator.save( err => {
+                        if (err) cond(err);
+                    });
+                });
                 notifyOperators();
             }
         });

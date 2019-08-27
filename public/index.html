@@ -1,11 +1,99 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=0.7">
-    <title>WSChat</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500&display=swap&subset=cyrillic" rel="stylesheet">
+    <title>operator page</title>
 </head>
-
 <body>
-<script type="text/javascript" src="client_bundle.js"></script></body>
 
+<div class="operator-dashbord">
+
+    <div class="user-form">
+
+        <div class="user-panel">
+            <div>
+                <h3>User list</h3>
+            </div>
+            <input type="text" id="usersearch">
+            <select name="" id="usersort">
+                <option value="all users">all users</option>
+                <option value="free users">free users</option>
+                <option value="free clients">free clients</option>
+                <option value="free operators">free operators</option>
+            </select>
+            <button id="sort-btn">sort</button>
+            <div>
+                <ul id="userlist"></ul>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <form>
+                <div>
+                    <label for="chat-title">Chat title</label>
+                    <input type="text" id="chat-title">
+                </div>
+                <div>
+                    <label for="bot-name">Bot name</label>
+                    <input type="text" id="bot-name">
+                </div>
+                <div>
+                    <label for="position">Position</label>
+                    <select id="position">
+                        <option>right</option>
+                        <option>left</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="allow-to-minimize">Allow to minimize</label>
+                    <input type="checkbox" id="allow-to-minimize">
+                </div>
+                <div>
+                    <label for="allow-drag">Allow drag</label>
+                    <input type="checkbox" id="allow-drag">
+                </div>
+                <div>
+                    <label for="require-name">Require name</label>
+                    <input type="checkbox" id="require-name">
+                </div>
+                <div>
+                    <label for="show-data-time">Show data time</label>
+                    <input type="checkbox" id="show-data-time">
+                </div>
+                <button id="send-btn" onclick="return false" class="send-btn-config">upd settings</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="chat-controls">
+        <div class="active-user">
+            <span>
+                <span>Active user: </span>
+                <span id="active-user"></span>
+            </span>
+        </div>
+        <div class="userchat-controlwindow">
+            <div class="user-chat">
+                <div class="chat-window" id="chat-window"></div>
+                <textarea name="" id="" rows="4" class="chat-input" id="chat-input" placeholder="input message text"></textarea>
+                <button class="chat-send" id="chat-send">send</button>
+            </div>
+            <div class="control-window">
+                <div class="command-win">
+                    <span>Command: </span>
+                    <span id="param-btns">
+                        <button>geoip-db</button>
+                        <button>ip-api</button>
+                    </span>
+                </div>
+                <div id="commands-log" class="commands-log"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="operator_bundle.js"></script></body>
 </html>

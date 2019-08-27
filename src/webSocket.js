@@ -65,9 +65,11 @@ export function wsStart() {
                         let uuid = uuidv1();
                         let msg = JSON.parse(message).message.split(' ');
                         ws.uuid = uuid;
-                        if (message[0] == 'operator'){
+                        console.log(``)
+                        if (msg[0] == 'operator'){
                             const operator = new Operator(ws, uuid);
                             operatorsMap.set(uuid, operator);
+                            console.log(`add operator: ${operatorsMap.get(uuid)}`);
                             new OperatorModel({
                                 uuid : operator.uuid,
                                 connectionTime : operator.connectionTime
@@ -75,7 +77,7 @@ export function wsStart() {
                             notifyOperators();
                             cond('reg operator');
                         } else {
-                            const client = new Client(ws, uuid, message[1]);
+                            const client = new Client(ws, uuid, msg[1]);
                             clientsMap.set(uuid, client);
                             new ClientModel({
                                 uuid : client.uuid,

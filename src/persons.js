@@ -32,7 +32,8 @@ Person.prototype = {
 //====== Client ====== //
 export function Client(ws, uuid, nick) {
     Person.call(this, ws, uuid);
-    this.nick = nick || 'Client';
+    this.nick = 'Client';
+    // this.nick = nick || 'Client';
     this._type = 'client';
     this.messageHistory = [];
     this.serviceMsgsHistory = [];
@@ -156,6 +157,7 @@ Operator.prototype.disconnectClient = function () {
     notifyOperators();
 };
 Operator.prototype.getClientsList = function () {
+    console.log('send clients');
     this.sendServiceMsg('getClientsList',
         JSON.stringify({
             clients : mapToArr(clientsMap),

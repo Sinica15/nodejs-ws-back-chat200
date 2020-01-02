@@ -1,4 +1,4 @@
-Visualisation balance pancakes on the bar
+Web Socket tech support chat
 ==============
 
 > Created using WebSockets
@@ -9,10 +9,16 @@ It can: configure agent name in client interface, remind his location and state 
 
 This project require installed mongoDB.
 
+Client's chat can be added on page by adding on it client interface script.
+
+---
 [agent interface repo](https://github.com/Sinica15/js-ws-front-operator-chat200)
+
 ![agent_interface](https://raw.githubusercontent.com/Sinica15/nodejs-ws-back-chat200/master/forRM/agent_interface.png)
 
+---
 [client interface repo](https://github.com/Sinica15/js-ws-front-chat200)
+
 ![client_interface](https://raw.githubusercontent.com/Sinica15/nodejs-ws-back-chat200/master/forRM/client_interface.png)
 
 ``` bash
